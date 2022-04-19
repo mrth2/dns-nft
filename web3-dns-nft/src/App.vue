@@ -1,24 +1,55 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { onMounted, ref } from "vue";
+import HelloWorld from "./components/HelloWorld.vue";
+import TheWelcome from "./components/TheWelcome.vue";
+import WalletConnect from "./components/WalletConnect.vue";
+
+const currentAccount = ref(null);
+
+async function checkIfWalletIsConnected() {
+  const { ethereum } = window;
+  if (!ethereum) {
+    // console.log('error');
+    return;
+  } else {
+    console.log("ethereum", ethereum);
+  }
+
+  const accounts = await ethereum.request({ method: "eth_accounts" });
+  console.log(accounts);
+  if (accounts.length !== 0) {
+    const account = accounts[0];
+    currentAccount.value = account;
+  } else {
+    console.log("no authorized account");
+  }
+}
+
+onMounted(checkIfWalletIsConnected);
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+    <img
+      alt="Vue logo"
+      class="logo"
+      src="./assets/logo.png"
+      width="125"
+      height="125"
+    />
 
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <HelloWorld msg="Welcome!" />
     </div>
   </header>
 
   <main>
-    <TheWelcome />
+    <WalletConnect v-if="!currentAccount" v-model:account="currentAccount" />
   </main>
 </template>
 
 <style>
-@import './assets/base.css';
+@import "./assets/base.css";
 
 #app {
   max-width: 1280px;
