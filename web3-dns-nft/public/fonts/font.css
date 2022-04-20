@@ -1,0 +1,7 @@
+@font-face {
+  font-display: block;
+  font-family: "NftOpenSea";
+  font-display: auto;
+  src: local("NftOpenSea"),
+    url("/fonts/NftsOpenseaRegular.ttf") format("truetype");
+}
