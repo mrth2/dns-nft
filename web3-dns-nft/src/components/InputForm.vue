@@ -12,6 +12,8 @@ const CONTRACT_ADDRESS = "0xb0CA81E8f21C427BbF68627BC97dF6Adcc6Fad38";
 
 const domainRef = ref();
 const recordRef = ref();
+const loading = ref(false);
+const buttonText = ref("Mint Domain");
 async function mintDomain() {
   if (!domain.value) {
     domainRef.value.setCustomValidity("Please enter a domain name");
@@ -28,6 +30,8 @@ async function mintDomain() {
     alert("Domain name must be at least 3 characters long");
     return;
   }
+
+  loading.value = true;
 
   const price =
     domain.value.length === 3
@@ -49,6 +53,7 @@ async function mintDomain() {
       );
 
       console.log("call blockchain to register domain");
+      buttonText.value = "Registering Domain...";
       let tx = await contract.register(domain.value, {
         value: ethers.utils.parseEther(price),
       });
@@ -58,6 +63,7 @@ async function mintDomain() {
           "domain minted https://mumbai.polygonscan.com/tx/" + tx.hash
         );
       }
+      buttonText.value = "Set Record...";
       // save the record to blockchain contract
       tx = await contract.setRecord(domain.value, record.value);
 
@@ -73,6 +79,8 @@ async function mintDomain() {
     console.log("error", error);
     alert(error.message);
   }
+  loading.value = false;
+  buttonText.value = "Mint Domain";
 }
 const tldRef = ref();
 const domainRight = ref(0);
@@ -118,7 +126,7 @@ onMounted(() => {
       />
     </div>
     <div class="form-group">
-      <button type="submit" class="mint-button">Mint Domain</button>
+      <button type="submit" class="mint-button" :disabled="loading">{{ buttonText }}</button>
     </div>
   </form>
 </template>
