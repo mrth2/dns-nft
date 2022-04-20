@@ -1,8 +1,8 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import HelloWorld from "./components/HelloWorld.vue";
-import TheWelcome from "./components/TheWelcome.vue";
 import WalletConnect from "./components/WalletConnect.vue";
+import InputForm from "./components/InputForm.vue";
 
 const currentAccount = ref(null);
 
@@ -45,6 +45,7 @@ onMounted(checkIfWalletIsConnected);
 
   <main>
     <WalletConnect v-if="!currentAccount" v-model:account="currentAccount" />
+    <InputForm />
   </main>
 </template>
 
@@ -61,6 +62,7 @@ onMounted(checkIfWalletIsConnected);
 
 header {
   line-height: 1.5;
+  @apply mb-5 sm:mb-0;
 }
 
 .logo {

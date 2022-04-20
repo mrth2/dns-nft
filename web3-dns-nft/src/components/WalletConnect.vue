@@ -43,7 +43,4 @@ async function connectWallet() {
 .cw-container {
   @apply flex flex-col justify-center items-center;
 }
-button {
-  @apply bg-green-600 px-4 py-2 rounded mt-5 text-white font-bold;
-}
 </style>
